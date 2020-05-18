@@ -34,7 +34,7 @@ public class SerialPortFinder {
             String driverName = readLine.substring(0, 0x15).trim();
             String[] fields = readLine.split(" +");
             if ((fields.length >= 5) && (fields[fields.length - 1].equals(SERIAL_FIELD))) {
-                Log.d(TAG, "Found new driver " + driverName + " on " + fields[fields.length - 4]);
+                Log.d(TAG, "found new driver " + driverName + " on " + fields[fields.length - 4]);
                 drivers.add(new Driver(driverName, fields[fields.length - 4]));
             }
         }

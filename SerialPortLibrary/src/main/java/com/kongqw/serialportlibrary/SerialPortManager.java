@@ -42,13 +42,13 @@ public class SerialPortManager extends SerialPort {
      */
     public boolean openSerialPort(File device, int baudRate) {
 
-        Log.i(TAG, "openSerialPort: " + String.format("打开串口 %s  波特率 %s", device.getPath(), baudRate));
+        Log.i(TAG, String.format("打开串口 %s ; 波特率 %s", device.getPath(), baudRate));
 
         // 校验串口权限
         if (!device.canRead() || !device.canWrite()) {
             boolean chmod777 = chmod777(device);
             if (!chmod777) {
-                Log.i(TAG, "openSerialPort: 没有读写权限");
+                Log.e(TAG, device.getPath() + "没有 777 权限");
                 if (null != mOnOpenSerialPortListener) {
                     mOnOpenSerialPortListener.onFail(device, OnOpenSerialPortListener.Status.NO_READ_WRITE_PERMISSION);
                 }
@@ -60,7 +60,7 @@ public class SerialPortManager extends SerialPort {
             mFd = open(device.getAbsolutePath(), baudRate, 0);
             mFileInputStream = new FileInputStream(mFd);
             mFileOutputStream = new FileOutputStream(mFd);
-            Log.i(TAG, "openSerialPort: 串口已经打开 " + mFd);
+            Log.i(TAG, String.format("串口 %s 已经打开!!!",device.getPath()));
             if (null != mOnOpenSerialPortListener) {
                 mOnOpenSerialPortListener.onSuccess(device);
             }

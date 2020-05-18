@@ -27,11 +27,11 @@ public class Driver {
         File dev = new File("/dev");
 
         if (!dev.exists()) {
-            Log.i(TAG, "getDevices: " + dev.getAbsolutePath() + " 不存在");
+            Log.e(TAG, "getDevices: " + dev.getAbsolutePath() + " 不存在");
             return devices;
         }
         if (!dev.canRead()) {
-            Log.i(TAG, "getDevices: " + dev.getAbsolutePath() + " 没有读取权限");
+            Log.e(TAG, "getDevices: " + dev.getAbsolutePath() + " 没有读取权限");
             return devices;
         }
 
@@ -40,7 +40,7 @@ public class Driver {
         int i;
         for (i = 0; i < files.length; i++) {
             if (files[i].getAbsolutePath().startsWith(mDeviceRoot)) {
-                Log.d(TAG, "Found new device: " + files[i]);
+                Log.d(TAG, "found new device: " + files[i]);
                 devices.add(files[i]);
             }
         }

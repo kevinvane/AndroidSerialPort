@@ -33,18 +33,17 @@ public abstract class SerialPortReadThread extends Thread {
                     return;
                 }
 
-                Log.i(TAG, "run: ");
+                //Log.i(TAG, "run: ");
                 int size = mInputStream.read(mReadBuffer);
 
-                if (-1 == size || 0 >= size) {
+                if (0 >= size) {
                     return;
                 }
 
                 byte[] readBytes = new byte[size];
 
                 System.arraycopy(mReadBuffer, 0, readBytes, 0, size);
-
-                Log.i(TAG, "run: readBytes = " + new String(readBytes));
+                Log.i(TAG, String.format("read %d bytes",size));
                 onDataReceived(readBytes);
 
             } catch (IOException e) {
