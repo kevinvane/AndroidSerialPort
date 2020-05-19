@@ -32,6 +32,15 @@ public class SerialPortManager extends SerialPort {
     private HandlerThread mSendingHandlerThread;
     private Handler mSendingHandler;
     private SerialPortReadThread mSerialPortReadThread;
+    private boolean isOpen = false;
+
+    public boolean isOpen() {
+        return isOpen;
+    }
+
+    public void setOpen(boolean open) {
+        isOpen = open;
+    }
 
     /**
      * 打开串口
@@ -42,7 +51,7 @@ public class SerialPortManager extends SerialPort {
      */
     public boolean openSerialPort(File device, int baudRate) {
 
-        Log.i(TAG, String.format("打开串口 %s ; 波特率 %s", device.getPath(), baudRate));
+        Log.d(TAG, String.format("打开串口 %s ; 波特率 %s", device.getPath(), baudRate));
 
         // 校验串口权限
         if (!device.canRead() || !device.canWrite()) {
@@ -60,6 +69,7 @@ public class SerialPortManager extends SerialPort {
             mFd = open(device.getAbsolutePath(), baudRate, 0);
             mFileInputStream = new FileInputStream(mFd);
             mFileOutputStream = new FileOutputStream(mFd);
+            setOpen(true);
             Log.i(TAG, String.format("串口 %s 已经打开!!!",device.getPath()));
             if (null != mOnOpenSerialPortListener) {
                 mOnOpenSerialPortListener.onSuccess(device);
@@ -71,6 +81,7 @@ public class SerialPortManager extends SerialPort {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
+            setOpen(false);
             if (null != mOnOpenSerialPortListener) {
                 mOnOpenSerialPortListener.onFail(device, OnOpenSerialPortListener.Status.OPEN_FAIL);
             }
